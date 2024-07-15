@@ -1,0 +1,11 @@
+# Ignore Folders
+
+.idea/
+.out/
+bin/
+
+#Ignore Files
+
+*.class
+*.log
+*.tmp
