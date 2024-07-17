@@ -1,11 +1,15 @@
 import org.w3c.dom.ls.LSInput;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class CollectionTask {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
         String yellowSubmarineLyrics, noPuncLyrics;
         String[] wordArray;
@@ -19,7 +23,7 @@ public class CollectionTask {
 
         System.out.println("\n####### P A R T  O N E #######\n");
         //Printing each word and how often it was seen
-        countMap = countWords(wordArray);
+//        countMap = countWords(wordArray);
 
         //Converting array of words to list
         wordList = new ArrayList<>(Arrays.asList(wordArray));
@@ -30,13 +34,15 @@ public class CollectionTask {
 
         System.out.println("\n####### P A R T  T W O #######\n");
         //Printing sorted(by length) list of words
-        noDupWordList = printSortedList(noDupWordList);
+//        noDupWordList = printSortedList(noDupWordList);
 
         wordList = removeWord("yellow", wordList);
         wordList = removeWord("submarine", wordList);
 
         System.out.println("\n####### P A R T  T H R E E #######\n");
-        printList(wordList);
+//        printList(wordList);
+
+        verifyString(args[0]);
 
     }
 
@@ -139,6 +145,7 @@ public class CollectionTask {
         return wordList;
     }
 
+    //Function that removes each occurrence of a given keyword(String) from a List of words(String)
     public static List<String> removeWord(String keyword, List<String> wordList) {
         List<String> resultList = new ArrayList<>();
 
@@ -157,7 +164,42 @@ public class CollectionTask {
         for (String word : wordList) {
             System.out.println(word);
         }
-        return;
     }
+
+    public static void verifyString (String searchString) {
+
+        try (BufferedReader fReader = new BufferedReader(new FileReader("yellowsubmarine.txt"))) {
+            boolean found = false;
+            String currentLine;
+
+            while (fReader.readLine() != null) {
+                currentLine = fReader.readLine().toLowerCase();
+
+                if (currentLine.contains(searchString.toLowerCase())) {
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                throw new BeatlesException("Beatles");
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+
+        } catch (BeatlesException e) {
+            System.err.println(e);
+        }
+    }
+
 }
+
+class BeatlesException extends Exception {
+
+    public BeatlesException(String string) {
+        super(string);
+    }
+
+}
+
 
